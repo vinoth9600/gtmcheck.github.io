@@ -22,4 +22,53 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- You may style the button by overriding class "cmp-revoke-consent" -->
 <button class="cmp-revoke-consent">Manage Cookie Preferences</button>
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Conditional Button</title>
+</head>
+<body>
+
+<script>
+    // Function to get state and country location
+    function getLocation() {
+        // Fetch the country location
+        fetch('https://app.securiti.ai/core/v1/utils/geo/location')
+            .then(response => response.json())
+            .then(data => {
+                const state = data.data.StateISOCode.en;
+                const country = data.data.CountryISOCode.en;
+
+                // Validate the state and country to match California and the United States
+                if (state === 'CA' && country === 'IN') {
+                    console.log("State and country are " + state + ", " + country);
+
+                    // Create a button element
+                    var button = document.createElement("button");
+                    button.className = "cmp-revoke-consent";
+                    button.textContent = "Do not sell or share my personal information";
+
+                    // Create a div element and append the button to it
+                    var div = document.createElement("div");
+                    div.className = "cmp-button";
+                    div.appendChild(button);
+
+                    // Append the div to the document body
+                    document.body.appendChild(div);
+                } else {
+                    console.log("State and country are " + state + ", " + country);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // Call the function when the page loads
+    getLocation();
+</script>
+
+</body>
+</html>
+
 </body>
